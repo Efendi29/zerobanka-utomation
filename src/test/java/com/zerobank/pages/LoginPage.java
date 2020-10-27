@@ -1,35 +1,43 @@
 package com.zerobank.pages;
 
-
+import com.zerobank.utilities.ConfigurationReader;
 import com.zerobank.utilities.Driver;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Wait;
 
 public class LoginPage {
-
     public LoginPage(){
         PageFactory.initElements(Driver.get(), this);
     }
 
-    //@FindBy(id="prependedInput")
-    public WebElement userName;
 
+    @FindBy(id="user_login")
+    public WebElement Login;
 
+    @FindBy(id="user_password")
+    public WebElement Password;
 
-    //@FindBy(id="prependedInput2")
-    public WebElement password;
+    @FindBy(name = "submit")
+    public WebElement signIn;
+    
+    @FindBy(xpath = "//*[@id=\"login_form\"]/div[1]")
+    public WebElement LoginErrorMessage;
 
-    //@FindBy(name = "_submit")
-    public WebElement submit;
+    public void login(){
+    WebDriver driver = null;
+        String username = ConfigurationReader.get("username");
+        String password = ConfigurationReader.get("password");
 
-
-    public void login(String userNameStr, String passwordStr) {
-        userName.sendKeys(userNameStr);
-        password.sendKeys(passwordStr);
-        submit.click();
-        // verification that we logged
+        Login.sendKeys(username);
+        Password.sendKeys(password);
+        signIn.click();
+       Alert alert= driver.switchTo().alert();
+       alert.accept();
     }
-    //BREAK UNTIL 12:10
+
 
 }

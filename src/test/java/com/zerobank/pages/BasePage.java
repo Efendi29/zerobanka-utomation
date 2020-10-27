@@ -15,103 +15,49 @@ import java.util.List;
 
 public abstract class  BasePage {
 
-    //@FindBy(css = "span.title-level-1")
-    public List<WebElement> menuOptions;
+    @FindBy(xpath = "//ul[@class='nav nav-tabs']")
+    public WebElement menu;
 
-    //@FindBy(css = "div[class='loader-mask shown']")
-    @CacheLookup
-    protected WebElement loaderMask;
+    @FindBy(xpath = "//*[@id=\"account_summary_tab\"]/a")
+    public List<WebElement> Account_Summary;
 
-    //@FindBy(css = "h1[class='oro-subtitle']")
-    public WebElement pageSubTitle;
+    @FindBy(xpath = "//*[@id=\"account_activity_tab\"]/a")
+    public WebElement Account_Activity;
 
-    //@FindBy(css = "#user-menu > a")
-    public WebElement userName;
+    @FindBy(xpath = "//*[@id=\"transfer_funds_tab\"]/a")
+    public WebElement Transfer_Funds;
 
-    //@FindBy(linkText = "Logout")
-    public WebElement logOutLink;
+    @FindBy(xpath = "//*[@id=\"pay_bills_tab\"]/a")
+    public WebElement Pay_Bills;
 
-    //@FindBy(linkText = "My User")
-    public WebElement myUser;
+    @FindBy(xpath = "//*[@id=\"money_map_tab\"]/a")
+    public WebElement My_Money_Map;
+
+    @FindBy(xpath = "//*[@id=\"online_statements_tab\"]/a")
+    public WebElement Online_Statements;
+
+    @FindBy(xpath = "//a[@class='brand']")
+    public WebElement Zero_Bank;
+
+    @FindBy(xpath = "(//li[@class='dropdown'])[1]")
+    public WebElement Settings;
+
+    @FindBy(id = "//button[@type='submit']")
+    public WebElement Help;
+
+    @FindBy(xpath = "(//li[@class='dropdown'])[2]")
+    public WebElement username;
+
+    @FindBy(id = "logout_link")
+    public WebElement logout;
+
+    @FindBy(xpath = "//input[@id='searchTerm']")
+    public WebElement searchbox;
+
 
     public BasePage() {
         PageFactory.initElements(Driver.get(), this);
     }
-
-
-    /**
-     * @return page name, for example: Dashboard
-     */
-    public String getPageSubTitle() {
-        //ant time we are verifying page name, or page subtitle, loader mask appears
-        waitUntilLoaderScreenDisappear();
-//        BrowserUtils.waitForStaleElement(pageSubTitle);
-        return pageSubTitle.getText();
-    }
-
-
-    /**
-     * Waits until loader screen present. If loader screen will not pop up at all,
-     * NoSuchElementException will be handled  bu try/catch block
-     * Thus, we can continue in any case.
-     */
-    public void waitUntilLoaderScreenDisappear() {
-        try {
-            WebDriverWait wait = new WebDriverWait(Driver.get(), 5);
-            wait.until(ExpectedConditions.invisibilityOf(loaderMask));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public String getUserName(){
-        waitUntilLoaderScreenDisappear();
-        BrowserUtils.waitForVisibility(userName, 5);
-        return userName.getText();
-    }
-
-
-
-    public void logOut(){
-        BrowserUtils.waitFor(2);
-        BrowserUtils.clickWithJS(userName);
-        BrowserUtils.clickWithJS(logOutLink);
-    }
-    public void goToMyUser(){
-        waitUntilLoaderScreenDisappear();
-        BrowserUtils.waitForClickablility(userName, 5).click();
-        BrowserUtils.waitForClickablility(myUser, 5).click();
-
-    }
-
-    /**
-     * This method will navigate user to the specific module in vytrack application.
-     * For example: if tab is equals to Activities, and module equals to Calls,
-     * Then method will navigate user to this page: http://qa2.vytrack.com/call/
-     *
-     * @param tab
-     * @param module
-     */
-    public void navigateToModule(String tab, String module) {
-        String tabLocator = "//span[normalize-space()='" + tab + "' and contains(@class, 'title title-level-1')]";
-        String moduleLocator = "//span[normalize-space()='" + module + "' and contains(@class, 'title title-level-2')]";
-        try {
-            BrowserUtils.waitForClickablility(By.xpath(tabLocator), 5);
-            WebElement tabElement = Driver.get().findElement(By.xpath(tabLocator));
-            new Actions(Driver.get()).moveToElement(tabElement).pause(200).doubleClick(tabElement).build().perform();
-        } catch (Exception e) {
-            BrowserUtils.clickWithWait(By.xpath(tabLocator), 5);
-        }
-        try {
-            BrowserUtils.waitForPresenceOfElement(By.xpath(moduleLocator), 5);
-            BrowserUtils.waitForVisibility(By.xpath(moduleLocator), 5);
-            BrowserUtils.scrollToElement(Driver.get().findElement(By.xpath(moduleLocator)));
-            Driver.get().findElement(By.xpath(moduleLocator)).click();
-        } catch (Exception e) {
-//            BrowserUtils.waitForStaleElement(Driver.get().findElement(By.xpath(moduleLocator)));
-            BrowserUtils.clickWithTimeOut(Driver.get().findElement(By.xpath(moduleLocator)),  5);
-        }
-    }
-
 }
+
+
